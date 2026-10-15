@@ -1,0 +1,3 @@
+{% extends 'cmms/modules/tool.html' %}
+{% block description %}Prepara la operación de SETRAM con registros de tu organización.{% endblock %}
+{% block workspace %}<section class="panel"><div class="panel-heading"><h2>Primeros pasos</h2></div><div class="panel-body">{% for step in steps %}<div class="stat-line"><div><strong>{{ forloop.counter }}. {{ step.title }}</strong><small class="d-block text-muted">{{ step.count }} registros disponibles</small></div><a class="btn btn-outline-primary" href="{% url 'list' step.key %}">Abrir módulo →</a></div>{% endfor %}</div></section><div class="alert alert-light border mt-4">La información se guarda en PostgreSQL CMMS. Los accesos dependen del rol y de la visibilidad configurada por el administrador.</div>{% endblock %}

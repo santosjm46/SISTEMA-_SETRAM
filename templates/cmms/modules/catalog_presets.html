@@ -1,0 +1,23 @@
+{% extends 'cmms/base.html' %}
+{% block content %}
+<div class="page-heading"><div><div class="eyebrow">SETRAM · CONFIGURACIÓN INICIAL</div><h1>Catálogos iniciales</h1><p>Revisa los elementos disponibles y agrega los que necesite tu operación.</p></div><a class="btn btn-outline-primary" href="{% url 'list' 'repuestos' %}">Ver repuestos →</a></div>
+<section class="panel panel-body mb-4">
+  <h2>Origen de la información</h2>
+  <p>Las categorías se observaron en <a href="{{ catalog.reference.url }}" target="_blank" rel="noopener noreferrer">BusCMMS</a> y se tradujeron al español. Su inventario, programas y biblioteca mostraron cero registros.</p>
+  <p>Los repuestos, síntomas, tareas y programas son una base general preparada para SETRAM. Los códigos GEN identifican familias internas: confirma referencias OEM, dimensiones y compatibilidad por modelo. Los precios, existencias y mínimos comienzan en cero; las tareas no incluyen tiempos ni frecuencias de mantenimiento definidos.</p>
+  <p class="mb-0 text-muted">Los registros que ya existen se conservan. Volver a aplicar el catálogo agrega únicamente elementos faltantes.</p>
+</section>
+<form method="post">{% csrf_token %}
+  {% for group in catalog.groups %}
+  <section class="panel mb-4">
+    <div class="panel-heading"><div><label class="d-flex align-items-center gap-2"><input class="form-check-input" type="checkbox" name="catalogos" value="{{ group.key }}" checked><strong>{{ group.title }}</strong></label><p>{{ group.new }} por agregar · {{ group.kept }} existentes</p></div><a href="{% url 'list' group.key %}">Abrir módulo →</a></div>
+    <details class="panel-body"><summary>Revisar {{ group.rows|length }} elementos y su origen</summary>
+      <div class="table-responsive mt-3"><table class="table"><thead><tr><th>Código</th><th>Elemento</th><th>Sistema / categoría</th><th>Origen</th><th>Acción</th></tr></thead><tbody>
+        {% for row in group.rows %}<tr><td>{{ row.code }}</td><td>{{ row.name }}</td><td>{{ row.system }}</td><td><small>{{ row.source }}</small></td><td>{% if row.existing %}Conservar{% else %}Agregar{% endif %}</td></tr>{% endfor %}
+      </tbody></table></div>
+    </details>
+  </section>
+  {% endfor %}
+  <div class="d-flex flex-wrap gap-3 mb-4"><button class="btn btn-primary" type="submit">Agregar catálogos seleccionados</button><a class="btn btn-light" href="{% url 'dashboard' %}">Volver al panel</a></div>
+</form>
+{% endblock %}

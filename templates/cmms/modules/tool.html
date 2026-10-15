@@ -1,0 +1,7 @@
+{% extends 'cmms/base.html' %}
+{% block content %}
+<div class="page-heading"><div><div class="eyebrow">{{ module.section|upper }}</div><h1>{{ page_title }}</h1><p>{% block description %}Información y herramientas de SETRAM.{% endblock %}</p></div><div class="heading-actions">{% block actions %}{% block tools %}{% endblock %}{% endblock %}</div></div>
+{% if stats %}<div class="row g-3 mb-4">{% for stat in stats %}<div class="col-6 col-xl-3"><div class="metric-card"><div class="metric-top">{{ stat.label }}</div><div class="metric-value module-value">{{ stat.value }}</div></div></div>{% endfor %}</div>{% endif %}
+{% include 'cmms/modules/workspace_tabs.html' %}
+{% block workspace %}{% endblock %}
+{% endblock %}
